@@ -4,6 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.MatrixCursor;
+import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -21,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,13 +35,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity
-        implements FindLocationCallback, NavigationView.OnNavigationItemSelectedListener{
+        implements FindLocationCallback, DirectionFinderCallback, NavigationView.OnNavigationItemSelectedListener {
 
     private SimpleCursorAdapter mAdapter;
     static public GoogleMap mMap = null;
+    static public FloatingActionButton fab = null;
     Context context;
 
     @Override
@@ -49,13 +55,11 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         try {
             setSupportActionBar(toolbar);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.d("debug", e.getMessage());
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,15 +103,16 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchView.clearFocus();
-                FindLocation find = new FindLocation((FindLocationCallback)context, query);
+                FindLocation find = new FindLocation((FindLocationCallback) context, query);
                 try {
                     Log.d("debug", "Submit query");
                     find.find();
                 } catch (Exception e) {
-                    Log.d("debug", "Exception query "+ e.getMessage());
+                    Log.d("debug", "Exception query " + e.getMessage());
                 }
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String s) {
                 // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
@@ -115,7 +120,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        String[] columnNames = {"_id","text"};
+        String[] columnNames = {"_id", "text"};
         MatrixCursor cursor = new MatrixCursor(columnNames);
 
         return super.onCreateOptionsMenu(menu);
@@ -165,7 +170,7 @@ public class MainActivity extends AppCompatActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mMap = mapFragment.getMap();
-        LatLng benthanh = new LatLng(10.7725986,106.697616);
+        LatLng benthanh = new LatLng(10.7725986, 106.697616);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(benthanh, 16));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -181,6 +186,34 @@ public class MainActivity extends AppCompatActivity
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setAllGesturesEnabled(true);
         mMap.getUiSettings().setCompassEnabled(true);
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(final Marker marker) {
+                marker.showInfoWindow();
+                Snackbar.make(fab, "Tìm đường đến địa điểm này?", Snackbar.LENGTH_LONG)
+                        .setAction("Có", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                LatLng des = marker.getPosition();
+                                LocationManager lm = (LocationManager) getSystemService(context.LOCATION_SERVICE);
+                                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                    Toast.makeText(context, "Hãy bật GPS để xác định vị trí của bạn", Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+                                Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                double longitude = location.getLongitude();
+                                double latitude = location.getLatitude();
+                                DirectionFinder direct = new DirectionFinder((DirectionFinderCallback)context, latitude + "," + longitude, des.latitude + "," + des.longitude);
+                                try {
+                                    direct.execute();
+                                } catch (Exception e) {
+                                    Log.d("debug", "Exception finding direction: " + e.getMessage());
+                                }
+                            }
+                        }).setActionTextColor(Color.RED).show();
+                return true;
+            }
+        });
     }
 
     @Override
@@ -194,8 +227,18 @@ public class MainActivity extends AppCompatActivity
         for (int i = 0; i < res.size(); ++i)
         {
             LocationInfo loc = res.get(i);
-            mMap.addMarker(new MarkerOptions().position(loc.position).title(loc.name));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc.position, 16));
+            loc.addMarkerToMap(mMap);
         }
+    }
+
+    @Override
+    public void onDirectionFinderStart() {
+        mMap.clear();
+    }
+
+    @Override
+    public void onDirectionFinderSuccess(List<Route> route) {
+        for (int i = 0; i < route.size(); ++i)
+            route.get(i).addToMap(mMap);
     }
 }

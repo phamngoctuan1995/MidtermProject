@@ -20,7 +20,7 @@ public class MyDialog {
     {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.location_dialog);
-        dialog.setTitle("Tìm kiếm địa ");
+        dialog.setTitle("Tìm kiếm địa điểm");
         dialog.setCanceledOnTouchOutside(false);
         // set the custom dialog components - text, image and button
 

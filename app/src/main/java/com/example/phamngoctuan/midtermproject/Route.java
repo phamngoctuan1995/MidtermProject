@@ -2,6 +2,7 @@ package com.example.phamngoctuan.midtermproject;
 
 import android.graphics.Color;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -26,7 +27,7 @@ public class Route {
 
     public PolylineOptions getPolylineOption()
     {
-        PolylineOptions res = new PolylineOptions().color(Color.BLUE).width(5);
+        PolylineOptions res = new PolylineOptions().color(Color.BLUE).width(10);
         for (int i = 0; i < points.size(); ++i)
             res.add(points.get(i));
         return res;
@@ -44,6 +45,7 @@ public class Route {
                 .title(endAddress)
                 .position(endLocation).snippet("end"));
         mMap.addPolyline(polylineOptions);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 14));
         return polylineOptions;
     }
 }
