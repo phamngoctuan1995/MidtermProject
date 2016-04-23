@@ -4,13 +4,11 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.MatrixCursor;
-import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationManager;
+import android.graphics.BitmapFactory;
+
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,16 +22,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,12 +42,67 @@ public class MainActivity extends AppCompatActivity
     private SimpleCursorAdapter mAdapter;
     static public GoogleMap mMap = null;
     static public FloatingActionButton fab = null;
-    Context context;
+    static Context context;
+
+    void initVariables()
+    {
+        context = this;
+        MyConstant.onClickMkDirect = new onClickMarkerDirection();
+        MyConstant.onClickFabUndoDirect = new onClickFabUndoDirection();
+    }
+
+    void initDirection()
+    {
+        try {
+            MyConstant.directionView = findViewById(R.id.direction_layer);
+            MyConstant.directionSubView = findViewById(R.id.direction_layer_ori_des);
+            MyConstant.directionInfoView = findViewById(R.id.direction_layer_info);
+
+            MyConstant.directionOri = (EditText) findViewById(R.id.etOrigin);
+            MyConstant.directionDes = (EditText) findViewById(R.id.etDestination);
+            MyConstant.directionSearch = (Button) findViewById(R.id.btnFindPath);
+            MyConstant.directionDuration = (TextView) findViewById(R.id.tvDuration);
+            MyConstant.directionDistance = (TextView) findViewById(R.id.tvDistance);
+        }
+        catch (Exception e)
+        {
+            Log.d("debug", "Exception InitDirection: " + e.getMessage());
+        }
+
+        try {
+            MyConstant.directionSearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                        if (MyConstant.isReduce)
+                        {
+                            MyConstant.directionView.animate().translationY(0).setDuration(500);
+                            MyConstant.isReduce = false;
+                            return;
+                        }
+                        String ori = MyConstant.directionOri.getText().toString();
+                        String des = MyConstant.directionDes.getText().toString();
+                        if (ori.equals("") || des.equals("")) {
+                            Toast.makeText(context, "Xin nhập đầy đủ điểm bắt đầu/kết thúc", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        DirectionFinder finder = new DirectionFinder((DirectionFinderCallback) context, ori, des);
+                        try {
+                            finder.execute();
+                        } catch (Exception e) {
+                            Log.d("debug", "Exception Find derection ori-des");
+                        }
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            Log.d("debug", "listener " + e.getMessage());
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,14 +113,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
+        fab.setVisibility(View.INVISIBLE);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -78,7 +124,28 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        initMap();
+        try {
+            initVariables();
+        }
+        catch (Exception e)
+        {
+            Log.d("debug", "initVa " + e.getMessage ());
+        }
+        try {
+            initDirection();
+        }
+        catch (Exception e)
+        {
+            Log.d("debug", "init direct " + e.getMessage());
+        }
+        try{
+            initMap();
+        }
+        catch (Exception e)
+        {
+            Log.d("debug", "Initmap" + e.getMessage());
+        }
+
     }
 
     @Override
@@ -149,7 +216,15 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_location) {
             MyDialog.ShowDialogLocation(context);
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_direction) {
+            MyConstant.resetDirectionView();
+            MyConstant.directionMode();
+            MyConstant.directionView.animate().translationY(0);
+
+            if (MyConstant.isReduce)
+            {
+                MyConstant.isReduce = false;
+            }
 
         } else if (id == R.id.nav_slideshow) {
 
@@ -171,7 +246,7 @@ public class MainActivity extends AppCompatActivity
                 .findFragmentById(R.id.map);
         mMap = mapFragment.getMap();
         LatLng benthanh = new LatLng(10.7725986, 106.697616);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(benthanh, 16));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(benthanh, 14));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -186,34 +261,7 @@ public class MainActivity extends AppCompatActivity
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setAllGesturesEnabled(true);
         mMap.getUiSettings().setCompassEnabled(true);
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(final Marker marker) {
-                marker.showInfoWindow();
-                Snackbar.make(fab, "Tìm đường đến địa điểm này?", Snackbar.LENGTH_LONG)
-                        .setAction("Có", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                LatLng des = marker.getPosition();
-                                LocationManager lm = (LocationManager) getSystemService(context.LOCATION_SERVICE);
-                                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                                    Toast.makeText(context, "Hãy bật GPS để xác định vị trí của bạn", Toast.LENGTH_LONG).show();
-                                    return;
-                                }
-                                Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                                double longitude = location.getLongitude();
-                                double latitude = location.getLatitude();
-                                DirectionFinder direct = new DirectionFinder((DirectionFinderCallback)context, latitude + "," + longitude, des.latitude + "," + des.longitude);
-                                try {
-                                    direct.execute();
-                                } catch (Exception e) {
-                                    Log.d("debug", "Exception finding direction: " + e.getMessage());
-                                }
-                            }
-                        }).setActionTextColor(Color.RED).show();
-                return true;
-            }
-        });
+        mMap.setOnMarkerClickListener(MyConstant.onClickMkDirect);
     }
 
     @Override
@@ -238,7 +286,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onDirectionFinderSuccess(List<Route> route) {
+        if (route.size() < 1)
+            return;
         for (int i = 0; i < route.size(); ++i)
             route.get(i).addToMap(mMap);
+        MyConstant.directionMode();
+        MyConstant.directionView.animate().translationY(-MyConstant.directionSubView.getHeight()).setDuration(500);
+        MyConstant.isReduce = true;
     }
 }
+

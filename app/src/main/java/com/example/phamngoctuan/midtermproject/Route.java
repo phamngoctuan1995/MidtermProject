@@ -1,6 +1,7 @@
 package com.example.phamngoctuan.midtermproject;
 
 import android.graphics.Color;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,6 +37,11 @@ public class Route {
     public PolylineOptions addToMap(GoogleMap mMap)
     {
         PolylineOptions polylineOptions = getPolylineOption();
+        MyConstant.directionDuration.setText(duration.text);
+        MyConstant.directionDistance.setText(distance.text);
+        MyConstant.directionOri.setText(startAddress);
+        MyConstant.directionDes.setText(endAddress);
+
         mMap.addMarker(new MarkerOptions()
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.start_blue))
                 .title(startAddress)
