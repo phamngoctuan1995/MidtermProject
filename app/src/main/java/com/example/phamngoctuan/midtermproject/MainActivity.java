@@ -26,11 +26,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements FindLocationCallback, NavigationView.OnNavigationItemSelectedListener{
 
     private SimpleCursorAdapter mAdapter;
     static public GoogleMap mMap = null;
@@ -88,13 +92,20 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main, menu);
-        SearchView searchView;
+        final SearchView searchView;
         final MenuItem search_item = menu.findItem(R.id.action_search);
         searchView = (SearchView) search_item.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
+                searchView.clearFocus();
+                FindLocation find = new FindLocation((FindLocationCallback)context, query);
+                try {
+                    Log.d("debug", "Submit query");
+                    find.find();
+                } catch (Exception e) {
+                    Log.d("debug", "Exception query "+ e.getMessage());
+                }
                 return false;
             }
             @Override
@@ -170,5 +181,21 @@ public class MainActivity extends AppCompatActivity
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setAllGesturesEnabled(true);
         mMap.getUiSettings().setCompassEnabled(true);
+    }
+
+    @Override
+    public void onFindLocationPrepare() {
+
+    }
+
+    @Override
+    public void onFindLocationSuccess(ArrayList<LocationInfo> res) {
+        mMap.clear();
+        for (int i = 0; i < res.size(); ++i)
+        {
+            LocationInfo loc = res.get(i);
+            mMap.addMarker(new MarkerOptions().position(loc.position).title(loc.name));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc.position, 16));
+        }
     }
 }
