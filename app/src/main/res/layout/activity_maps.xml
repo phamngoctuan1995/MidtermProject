@@ -31,13 +31,15 @@ android:layout_height="match_parent">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/etOrigin"
-                android:hint="Enter origin address" />
+                android:hint="Enter origin address"
+                android:singleLine="true"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter destination address"
-                android:id="@+id/etDestination" />
+                android:id="@+id/etDestination"
+                android:singleLine="true"/>
         </LinearLayout>
 
         <LinearLayout

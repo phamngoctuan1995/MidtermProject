@@ -2,6 +2,7 @@ package com.example.phamngoctuan.midtermproject;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -33,6 +34,11 @@ public class FindLocation {
     }
 
     public void find() throws UnsupportedEncodingException {
+        if (!MyConstant.checkInternetAvailable())
+        {
+            Toast.makeText(MainActivity.context, "Không có kết nối Internet", Toast.LENGTH_SHORT).show();
+            return;
+        }
         callback.onFindLocationPrepare();
         new DownloadRawData().execute(createUrl());
     }

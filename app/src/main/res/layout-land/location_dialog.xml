@@ -18,8 +18,8 @@
         android:rowCount="2"
         android:layout_gravity="center_horizontal">
         <CheckBox android:id="@+id/cb_museum"
-            android:text="Bảo tàng"/>
-        <CheckBox android:id="@+id/cb_park"
+            android:text="Trạm ATM"/>
+        <CheckBox android:id="@+id/cb_atm"
             android:text="Công viên"/>
         <CheckBox android:id="@+id/cb_restaurant"
             android:text="Nhà hàng"/>

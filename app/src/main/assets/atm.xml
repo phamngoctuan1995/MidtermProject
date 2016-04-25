@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<saigonatm>
+	<district id="quan-1" name="Quận 1">
+		<place class="vietinbank" address="VietinBank Chi nhánh TP.HCM, 79A Hàm Nghi" latlng="10.7708152,106.7000218">
+		</place>
+		<place class="vietinbank" address="Nhà khách số 93 - 95 Hàm Nghi"
+			latlng="10.7705268,106.7015146">
+		</place>
+		<place class="vietinbank" address="Công ty Thương Mại Eden,307 đường Nguyễn Huệ" latlng="10.7727979,106.6965311">
+		</place>
+		<place class="vietinbank" address="Nhà hát thành phố, 07 công trường Lam Sơn" latlng="10.7766297,106.7039912">
+		</place>
+		<place class="vietinbank" address="Bệnh viện Từ Dũ, 284 Cống Quỳnh, P. Phạm Ngũ Lão" latlng="10.7684194,106.6830963">
+		</place>
+		<place class="vietinbank" address="VietinBank chi nhánh 1, 211 Trần Hưng Đạo, TP. HCM" latlng="10.7583531,106.6871257">
+		</place>
+		<place class="vietinbank" address="Vietinback - Trung tâm y tế Quận 1, 338 Hai Bà Trưng" latlng="10.789842,106.6895846">
+		</place>
+		<place class="vietinbank" address="Công ty Thế Kỷ 21, 41 Nguyễn Thị Minh Khai , TP. HCM" latlng="10.781131,106.6968523">
+		</place>
+		<place class="vietinbank" address="Công Ty Vận Tải Hành Khách Đường Sắt Sài Gòn" latlng="10.7714437,106.6992777">
+		</place>
+		<place class="vietinbank" address="PGD Bến Thành, 19 Phan Chu Trinh" latlng="10.7721951,106.6976884">
+		</place>
+		<place class="vietinbank" address="Khách sạn Phan Lan, 70 Bùi Viện, P. Phạm Ngũ Lão" latlng="10.7671948,106.6937423">
+		</place>
+		<place class="vietinbank" address="Bệnh viện Nhi đồng 2, 14 Lý Tự Trọng (cổng đường Nguyễn Du)" latlng="10.7805602,106.703269">
+		</place>
+		<place class="vietinbank" address="Công ty môi trường đô thị TP HCM, 42-44 Võ Thị Sáu" latlng="10.7902356,106.6941708">
+		</place>
+		<place class="vietinbank" address="266 Đề Thám, Quận 1" latlng="10.768394,106.693648">
+		</place>
+		<place class="vietinbank" address="Trường Tiểu học Nguyễn Thái Học, 71 Trần Hưng Đạo" latlng="10.7680269,106.695915">
+		</place>
+		<place class="vietinbank" address="Khách sạn Sophia : 36-38 Thái Văn Lung - Q1" latlng="10.7799808,106.703403">
+		</place>
+		<place class="vietinbank" address="Hòan Long Computer : 410B - C Nguyễn Thị Minh Khai -Q.1" latlng="10.7711745,106.6781942">
+		</place>
+		<place class="vietinbank" address="134-136 Trần Quang Khải, P. Tân Định, Quận 1" latlng="10.792077,106.691518">
+		</place>
+	</district>
+	<district id="quan-2" name="Quận 2">
+		<place class="vietinbank" address="Trường ĐH GTVT, số 17/12 Trần Não - KP3 -P.Bình An" latlng="10.8044578,106.7166799">
+		</place>
+		<place class="vietinbank" address="Trường cao đẳng Hàng Hải TP HCM,232 Nguyễn Văn Hưởng, Phường Thảo Điển, Q2" latlng="10.8112644,106.7310102">
+		</place>
+		<place class="vietinbank" address="133-135 Lương Đình Của, P.Bình An, Q.2" latlng="10.783579,106.726739">
+		</place>
+		<place class="vietinbank" address="PGD số 1 - cao ốc An Thịnh, KĐT An Phú, An Khánh, Q2, HCM" latlng="10.7978951,106.7363888">
+		</place>
+		<place class="vietinbank" address="615A Nguyễn Duy Trinh, P. Bình Trưng Đông" latlng="10.7881058,106.776579">
+		</place>
+	</district>
+	<district id="quan-5" name="Quận 5">
+		<place class="vietinbank" address="Bệnh viện Hùng Vương, 128 Hùng Vương" latlng="10.755913,106.6618771">
+		</place>
+		<place class="vietinbank" address="Bệnh viện Nguyễn TrãI, 314 Nguyễn Trãi, P8" latlng="10.755913,106.6618771">
+		</place>
+		<place class="vietinbank" address="BV Phạm Ngọc Thạch, 120 Hùng Vương - P.12" latlng="10.755913,106.6618771">
+		</place>
+		<place class="vietinbank" address="Bệnh viện Nhiệt đới, số 190 Hàm Tử, Phường 1, Quận 5, TP HCM" latlng="10.7524873,106.6767096">
+		</place>
+		<place class="vietinbank" address="Trường ĐH Khoa học Tự nhiên, 227 Nguyễn Văn Cừ" latlng="10.762689,106.6823399">
+		</place>
+	</district>
+</saigonatm>

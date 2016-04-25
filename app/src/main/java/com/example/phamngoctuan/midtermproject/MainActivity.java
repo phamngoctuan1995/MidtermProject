@@ -1,6 +1,7 @@
 package com.example.phamngoctuan.midtermproject;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.MatrixCursor;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity
     void initVariables()
     {
         context = this;
+        MyConstant.progressDialog = new ProgressDialog(this);
+        MyConstant.progressDialog.setMessage("Đang tìm ...");
         MyConstant.onClickMkDirect = new onClickMarkerDirection();
         MyConstant.onClickFabUndoDirect = new onClickFabUndoDirection();
     }
@@ -104,9 +107,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        Toolbar toolbar = null;
         try {
+            toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
         } catch (Exception e) {
             Log.d("debug", e.getMessage());
@@ -126,26 +129,13 @@ public class MainActivity extends AppCompatActivity
 
         try {
             initVariables();
-        }
-        catch (Exception e)
-        {
-            Log.d("debug", "initVa " + e.getMessage ());
-        }
-        try {
             initDirection();
-        }
-        catch (Exception e)
-        {
-            Log.d("debug", "init direct " + e.getMessage());
-        }
-        try{
             initMap();
         }
         catch (Exception e)
         {
-            Log.d("debug", "Initmap" + e.getMessage());
+            Log.d("debug", "Exception init OnCreate: " + e.getMessage ());
         }
-
     }
 
     @Override
@@ -214,28 +204,18 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_location) {
+        if (id == R.id.nav_publiclocation) {
             MyDialog.ShowDialogLocation(context);
         } else if (id == R.id.nav_direction) {
             MyConstant.resetDirectionView();
             MyConstant.directionMode();
             MyConstant.directionView.animate().translationY(0);
 
-            if (MyConstant.isReduce)
-            {
+            if (MyConstant.isReduce) {
                 MyConstant.isReduce = false;
             }
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -266,31 +246,36 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFindLocationPrepare() {
-
+        MyConstant.progressDialog.show();
     }
 
     @Override
     public void onFindLocationSuccess(ArrayList<LocationInfo> res) {
-        mMap.clear();
+        MyConstant.endDirectionMode();
         for (int i = 0; i < res.size(); ++i)
         {
             LocationInfo loc = res.get(i);
             loc.addMarkerToMap(mMap);
         }
+        MyConstant.progressDialog.dismiss();
     }
 
     @Override
     public void onDirectionFinderStart() {
-        mMap.clear();
+        MyConstant.progressDialog.show();
+        Log.d("debug", "Show dialog Onstart");
     }
 
     @Override
     public void onDirectionFinderSuccess(List<Route> route) {
         if (route.size() < 1)
             return;
+        mMap.clear();
+        MyConstant.directionMode();
         for (int i = 0; i < route.size(); ++i)
             route.get(i).addToMap(mMap);
-        MyConstant.directionMode();
+
+        MyConstant.progressDialog.dismiss();
         MyConstant.directionView.animate().translationY(-MyConstant.directionSubView.getHeight()).setDuration(500);
         MyConstant.isReduce = true;
     }

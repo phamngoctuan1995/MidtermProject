@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<saigoncinema>
+	<place class="galaxy" name="Galaxy Nguyễn Du" address="116 Nguyễn Du, Q.1, Tp. Hồ Chí Minh" tel="+84838235235"
+		link="https://moveek.com/rap/galaxy-nguyen-du/" lat="10.773486862736" lng="106.693476464560">
+	</place>
+	<place class="galaxy" name="Galaxy Nguyễn Trãi" address=" 230 Nguyễn Trãi, Q.1, Tp. Hồ Chí Minh" tel="+84839206688" link="https://moveek.com/rap/galaxy-nguyen-trai/" lat="10.764742974566" lng="106.687301695350">
+	</place>
+	<place class="galaxy" name="Galaxy Tân Bình" address="246 Nguyễn Hồng Đào, Q.Tân Bình, Tp. Hồ Chí Minh" tel="+84838494567" link="https://moveek.com/rap/galaxy-tan-binh/" lat="10.790547311935" lng="106.640767264340">
+	</place>
+	<place class="galaxy" name="Galaxy Kinh Dương Vương" address="718bis Kinh Dương Vương, Q.6, Tp. Hồ Chí Minh" tel="+84838172398" link="https://moveek.com/rap/galaxy-kinh-duong-vuong/" lat="10.750094572949" lng="106.628304309570">
+	</place>
+	<place class="galaxy" name="Galaxy Quang Trung" address="Lầu 3, CoopMart Foodcosa, 304A Quang Trung, P.11, Q. Gò Vấp, Tp. Hồ Chí Minh" tel="+84835897899" link="https://moveek.com/rap/galaxy-quang-trung/" lat="10.835150600000" lng="106.662448200000">
+	</place>
+	<place class="cgv" name="CGV CT Plaza" address="Tầng 10, CT Plaza, 60A Trường Sơn, P.2, Q. Tân Bình, Tp. Hồ Chí Minh" tel="+84862971981" link="https://moveek.com/rap/cgv-ct-plaza/" lat="10.812676213819" lng="106.665729861470">
+	</place>
+	<place class="cgv" name="CGV Hùng Vương Plaza" address="Tầng 7,Hùng Vương Plaza, 126 Hùng Vương, Q.5, Tp. Hồ Chí Minh" tel="+84822220388" link="https://moveek.com/rap/cgv-hung-vuong/" lat="10.755928742294" lng="106.662676334380">
+	</place>
+	<place class="cgv" name="CGV Parkson Paragon" address="Tầng 5, Parkson Paragon, 03 Nguyễn Lương Bằng, Q.7, Tp. Hồ Chí Minh" tel="+84854160088" link="https://moveek.com/rap/cgv-paragon/" lat="10.729639984366" lng="106.721706390380">
+	</place>
+	<place class="cgv" name="CGV Crescent Mall" address="Lầu 5, Crescent Mall Đại lộ Nguyễn Văn Linh, Phú Mỹ Hưng, Q.7 Tp. Hồ Chí Minh" tel="+84854122222" link="https://moveek.com/rap/cgv-crescent-mall/" lat="10.728719257095" lng="106.718600557130">
+	</place>
+	<place class="cgv" name="CGV Pandora City" address="Lầu 3, Pandora City 1/1 Trường Chinh, Q. Tân Phú, Tp. Hồ Chí Minh" tel="+84838123000" link="https://moveek.com/rap/cgv-pandora-city/" lat="10.806629292448" lng="106.634567358560">
+	</place>
+	<place class="cgv" name="CGV Celadon Tân Phú" address="Lầu 3, Aeon Mall 30 Bờ Bao Tân Thắng, P. Sơn Kỳ, Q. Tân Phú, Tp. Hồ Chí Minh" tel="+84862651000" link="https://moveek.com/rap/cgv-celadon/" lat="10.801328964526" lng="106.617891240160">
+	</place>
+	<place class="cgv" name="CGV Thảo Điền Pearl" address="Tầng 2, Thảo Điền Mall, 12 Quốc Hương, P. Thảo Điền, Q.2, Tp. Hồ Chí Minh" tel="+84835193000" link="https://moveek.com/rap/cgv-thao-dien-pearl/" lat="10.802113000000" lng="106.733272100000">
+	</place>
+	<place class="cgv" name="CGV Liberty Citypoint" address="Tầng M - 1, Liberty Center Saigon Citypoint, 59 - 61 Pasteur, Q.1, Tp. Hồ Chí Minh" tel="+84838223111" link="https://moveek.com/rap/cgv-liberty-citypoint/" lat="10.774816100000" lng="106.700680000000">
+	</place>
+	<place class="cgv" name="CGV Thủ Đức" address="Tầng 5, TTTM Vincom Thủ Đức, 216 Võ Văn Ngân, P. Bình Thọ, Q. Thủ Đức, Tp. Hồ Chí Minh" tel="+84837228811" link="https://moveek.com/rap/cgv-thu-duc/" lat="10.850418600000" lng="106.765523000000">
+	</place>
+	<place class="cgv" name="CGV SC VivoCity" address="Lầu 5, TTTM SC VivoCity, 1058 Nguyễn Văn Linh, Q.7, Tp. Hồ Chí Minh" tel="+84837750555" link="https://moveek.com/rap/cgv-vivocity/" lat="10.730116100000" lng="106.700507200000">
+	</place>
+	<place class="cgv" name="CGV Gò Vấp" address="Tầng 5 TTTM Vincom Plaza Gò Vấp, 12 Phan Văn Trị, P.7, Q. Gò Vấp, Tp. Hồ Chí Minh" tel="+84838941124" link="https://moveek.com/rap/cgv-go-vap/" lat="10.827784200000" lng="106.688425500000">
+	</place>
+	<place class="cgv" name="CGV Pearl Plaza" address="Tầng 5, Pearl Plaza, 561A Điện Biên Phủ, P.25, Q. Bình Thạnh, Tp. Hồ Chí Minh" tel="+84835106788" link="https://moveek.com/rap/cgv-van-thanh/" lat="10.799865000000" lng="106.718459000000">
+	</place>
+	<place class="lotte" name="Lotte Nam Sài Gòn" address="Tầng 3, Lotte Mart, 469 Nguyễn Hữu Thọ, P. Tân Hưng, Q.7, Tp. Hồ Chí Minh" tel="+84837752527" link="https://moveek.com/rap/lotte-q7/" lat="10.741041698621" lng="106.701388257790">
+	</place>
+	<place class="lotte" name="Lotte Diamond" address="Tầng 13, Diamond Plaza, 34 Lê Duẫn, Q.1, Tp. Hồ Chí Minh" tel="+84838227841" link="https://moveek.com/rap/lotte-diamond/" lat="10.780990963423" lng="106.698503356970">
+	</place>
+	<place class="lotte" name="Lotte Nowzone" address="Tầng 5, TTTM Nowzone, 235 Nguyễn Văn Cừ, P. Nguyễn Cư Trinh, Q.1, Tp. Hồ Chí Minh" tel="" link="https://moveek.com/rap/lotte-cinema-nowzone/" lat="10.764129000000" lng="106.680082600000">
+	</place>
+	<place class="lotte" name="Lotte Phú Thọ" address="Tầng 4 Lotte Mart Phú Thọ, ngã tư 3/2 và Lê Đại Hành, Q.11, Tp. Hồ Chí Minh" tel="+84862642602" link="https://moveek.com/rap/lotte-phu-tho/" lat="10.783271554881" lng="106.640911182550">
+	</place>
+	<place class="lotte" name="Lotte Cantavil" address="Tầng 7, Cantavil Premier, Xa lộ Hà Nội, P. n Phú, Q.2, TP. Hồ Chí Minh" tel="+84837402323" link="https://moveek.com/rap/lotte-cinema-cantavil/" lat="10.801630605203" lng="106.746975848560">
+	</place>
+	<place class="lotte" name="Lotte Cộng Hoà" address="Tầng 4, Pico Plaza, 20 Cộng Hòa, P.12, Q. Tân Bình, Tp. Hồ Chí Minh" tel="+84838116333" link="https://moveek.com/rap/lotte-cinema-cong-hoa/" lat="10.801026726943" lng="106.652597658860">
+	</place>
+	<place class="" name="BHD Star Vincom Lê Văn Việt" address="52 Lê Văn Việt, Quận 9, Tp. Hồ Chí Minh" tel="" link="https://moveek.com/rap/bhd-star-vincom-le-van-viet/" lat="10.845681000000" lng="106.779014000000">
+	</place>
+	<place class="bhd" name="BHD Star Vincom Thảo Điền" address="Tầng 5, TTTM Vincom Centre, 159 Xa Lộ Hà Nội, Quận 2, Tp. Hồ Chí Minh" tel="+84837446969" link="https://moveek.com/rap/bhd-star-mega-mall/" lat="10.802703000000" lng="106.737877000000">
+	</place>
+	<place class="bhd" name="BHD Star Quang Trung" address="Tầng B1&B2, TTTM Vincom, 190 Quang Trung, Gò Vấp, Tp. Hồ Chí Minh" tel="+84839892468" link="https://moveek.com/rap/bhd-star-quang-trung/" lat="10.829567933548" lng="106.672276107600">
+	</place>
+	<place class="bhd" name="BHD Star Phạm Hùng" address="Lầu 4, Centre Mall, C6/27 Phạm Hùng, Bình Chánh, Tp. Hồ Chí Minh" tel="+84837580123" link="https://moveek.com/rap/bhd-star-pham-hung/" lat="10.733782671049" lng="106.674199100000">
+	</place>
+	<place class="bhd" name="BHD Star Cineplex Icon 68" address="Lầu 3 & 4, TTTM ICON 68, 2 Hải Triều, Quận 1, TP. Hồ Chí Minh" tel="+84862670670" link="https://moveek.com/rap/bhd-star-cineplex-icon-68/" lat="10.771956527064" lng="106.704451706850">
+	</place>
+	<place class="bhd" name="BHD Star Cineplex 3/2" address="Lầu 4, Siêu thị Maximark 3/2, Quận 10, Tp. Hồ Chí Minh" tel="+84862645820" link="https://moveek.com/rap/bhd-star-cinema/" lat="10.775807172050" lng="106.680722236630">
+	</place>
+	<place class="other" name="Mega GS Cao Thắng" address="Lầu 6 - 7, 19 Cao Thắng, P.2, Q.3, Tp. Hồ Chí Minh" tel="+84862649911" link="https://moveek.com/rap/mega-gs-cao-thang/" lat="10.768952900000" lng="106.682911200000">
+	</place>
+	<place class="other" name="CineStar Nguyễn Trãi" address="271 Nguyễn Trãi, P. Nguyễn Cư Trinh, Q.1, Tp. Hồ Chí Minh" tel="+84873008881" link="https://moveek.com/rap/cinestar-quoc-thanh/" lat="10.763955100000" lng="106.687288300000">
+	</place>
+	<place class="other" name="Đống Đa" address="890 Trần Hưng Đạo, Quận 5, Tp. Hồ Chí Minh" tel="+84839234833" link="https://moveek.com/rap/dong-da/" lat="10.753673100646" lng="106.674161553380">
+	</place>
+	<place class="other" name="Cinebox 212" address="212 Lý Chính Thắng, P.9, Q.3, Tp. Hồ Chí Minh" tel="+84839350610" link="https://moveek.com/rap/cinebox-212/" lat="10.780646275972" lng="106.682639958530">
+	</place>
+</saigoncinema>

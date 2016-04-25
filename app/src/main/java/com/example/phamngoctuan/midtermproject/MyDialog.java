@@ -25,21 +25,33 @@ public class MyDialog {
         // set the custom dialog components - text, image and button
 
         
-        final CheckBox musium = (CheckBox)dialog.findViewById(R.id.cb_museum);
+        final CheckBox atm = (CheckBox)dialog.findViewById(R.id.cb_atm);
         final CheckBox park = (CheckBox)dialog.findViewById(R.id.cb_park);
         final CheckBox restaurant = (CheckBox)dialog.findViewById(R.id.cb_restaurant);
         final CheckBox cinema = (CheckBox)dialog.findViewById(R.id.cb_cinema);
         final CheckBox market = (CheckBox)dialog.findViewById(R.id.cb_market);
-        Button all = (Button)dialog.findViewById(R.id.bt_all);
+        final Button all = (Button)dialog.findViewById(R.id.bt_all);
 
         all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                musium.setChecked(true);
-                park.setChecked(true);
-                restaurant.setChecked(true);
-                cinema.setChecked(true);
-                market.setChecked(true);
+                if (all.getText().toString().equals("Tất cả")) {
+                    atm.setChecked(true);
+                    park.setChecked(true);
+                    restaurant.setChecked(true);
+                    cinema.setChecked(true);
+                    market.setChecked(true);
+                    all.setText("Bỏ chọn");
+                }
+                else
+                {
+                    atm.setChecked(false);
+                    park.setChecked(false);
+                    restaurant.setChecked(false);
+                    cinema.setChecked(false);
+                    market.setChecked(false);
+                    all.setText("Tất cả");
+                }
             }
         });
 

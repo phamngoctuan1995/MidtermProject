@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_location"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Danh sách địa điểm" />
-        <item
-            android:id="@+id/nav_direction"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Tìm đường" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
-    </group>
+    <item android:title="Địa điểm">
+        <menu>
+            <item
+                android:id="@+id/nav_direction"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Tìm đường" />
+            <item
+                android:id="@+id/nav_publiclocation"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="Địa điểm công cộng" />
+            <item
+                android:id="@+id/nav_famouslocation"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Điểm du lịch nổi tiếng"/>
+            <item
+                android:id="@+id/nav_favorlocation"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Địa điểm yêu thích" />
+        </menu>
+    </item>
 
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_phone"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="Gọi điện thoại" />
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
