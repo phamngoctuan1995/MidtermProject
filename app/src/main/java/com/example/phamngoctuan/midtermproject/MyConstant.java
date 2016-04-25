@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
+import android.support.annotation.MainThread;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -25,6 +27,12 @@ import android.widget.Toast;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * Created by phamngoctuan on 23/04/2016.
@@ -80,6 +88,31 @@ public class MyConstant {
         else
             return false;
     }
+
+    @NonNull
+    static String readFileFromAssets(String pathname) throws IOException {
+
+        InputStream file = MainActivity.context.getAssets().open(pathname);
+
+        StringBuffer buffer = new StringBuffer();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(file));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            buffer.append(line);
+        }
+        return buffer.toString();
+    }
+
+    static Location getCurrentLocation()
+    {
+        Context context = MainActivity.context;
+        LocationManager lm = (LocationManager) context.getSystemService(context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return null;
+        }
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        return location;
+    }
 }
 
 class onClickMarkerDirection implements GoogleMap.OnMarkerClickListener
@@ -87,19 +120,19 @@ class onClickMarkerDirection implements GoogleMap.OnMarkerClickListener
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
+        marker.showInfoWindow();
         Snackbar.make(MainActivity.fab, "Tìm đường đến địa điểm này?", Snackbar.LENGTH_LONG)
                 .setAction("Có", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Context context = MainActivity.context;
                         LatLng des = marker.getPosition();
-                        LocationManager lm = (LocationManager) context.getSystemService(context.LOCATION_SERVICE);
-                        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                        Location location = MyConstant.getCurrentLocation();
+                        if (location == null) {
                             Toast.makeText(context, "Hãy bật GPS để xác định vị trí của bạn", Toast.LENGTH_LONG).show();
                             return;
                         }
-                        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
                         double longitude = location.getLongitude();
                         double latitude = location.getLatitude();
                         DirectionFinder direct = new DirectionFinder((DirectionFinderCallback)context, latitude + "," + longitude, des.latitude + "," + des.longitude);

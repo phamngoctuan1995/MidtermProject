@@ -2,55 +2,29 @@ package com.example.phamngoctuan.midtermproject;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.jsoup.nodes.Element;
 
 /**
- * Created by phamngoctuan on 23/04/2016.
+ * Created by phamngoctuan on 25/04/2016.
  */
-public class LocationInfo {
-    public String name;
-    public String address;
-    public LatLng position;
-    public String placeId;
+public class CinemaInfo extends LocationInfo {
+    String tel= "";
+    String link = "";
+    String type = "";
 
-    public LocationInfo()
-    {
-        name = address = placeId = "";
-        position = null;
-    }
-
-    public Marker addMarkerToMap(GoogleMap mMap)
-    {
-        if (placeId.equals("atm") || placeId.equals("hotel") || placeId.equals("restaurant"))
-        {
-            Marker mk = mMap.addMarker(new MarkerOptions().position(position).title(name).snippet(address));
-            return mk;
-        }
-
-        Bitmap bmp = getBitmapMarker();
-        Marker mk = mMap.addMarker(new MarkerOptions().position(position).title(name)
-                .icon(BitmapDescriptorFactory.fromBitmap(bmp)).anchor((float) 0.5, (float) 1));
-        if (!placeId.equals("park") && !placeId.equals("restaurant"))
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 16));
-        return mk;
-    }
-
+    @Override
     public Bitmap getBitmapMarker() {
         RelativeLayout layout = new RelativeLayout(MainActivity.context);
         LayoutInflater inflater = LayoutInflater.from(MainActivity.context);
@@ -58,10 +32,19 @@ public class LocationInfo {
 
         TextView tvName = (TextView) layout.findViewById(R.id.tv_mk_name);
         TextView tvAddr = (TextView) layout.findViewById(R.id.tv_mk_address);
-
+        ImageView imvAvatar = (ImageView) layout.findViewById(R.id.imv_mk_avatar);
         try {
             tvName.setText(name);
             tvAddr.setText(address);
+
+            if (type.equals("galaxy"))
+                imvAvatar.setImageBitmap(BitmapFactory.decodeResource(MainActivity.context.getResources(), R.drawable.galaxy_cine));
+            else if (type.equals("bhd"))
+                imvAvatar.setImageBitmap(BitmapFactory.decodeResource(MainActivity.context.getResources(), R.drawable.bhd_cine));
+            else if (type.equals("lotte"))
+                imvAvatar.setImageBitmap(BitmapFactory.decodeResource(MainActivity.context.getResources(), R.drawable.lotte_cine));
+            else if (type.equals("cgv"))
+                imvAvatar.setImageBitmap(BitmapFactory.decodeResource(MainActivity.context.getResources(), R.drawable.cgv_cine));
         } catch (Exception e)
         {
             Log.d("debug", "Exception getBitmapmarker: " + e.getMessage());
@@ -80,17 +63,20 @@ public class LocationInfo {
         return bitmap;
     }
 
-    public void Parse(Element e){
+    @Override
+    public void Parse(Element e) {
         name = e.attr("name");
+        address = e.attr("address");
         String ll = e.attr("latlng");
-        position = new LatLng(Double.parseDouble(ll.substring(0, ll.indexOf(",")))
-                , Double.parseDouble(ll.substring(ll.indexOf(",") + 1, ll.length())));
+        position = new LatLng(Double.parseDouble(e.attr("lat")), Double.parseDouble(e.attr("lng")));
         placeId = e.attr("id");
-        address = "";
+        type = e.attr("class");
+        link = e.attr("link");
+        tel = e.attr("tel");
     }
 
-    public LocationInfo clone()
-    {
-        return new LocationInfo();
+    @Override
+    public LocationInfo clone() {
+        return new CinemaInfo();
     }
 }

@@ -45,13 +45,13 @@ public class Route {
         mMap.addMarker(new MarkerOptions()
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.start_blue))
                 .title(startAddress)
-                .position(startLocation).snippet("start"));
+                .position(startLocation).snippet("Điểm bắt đầu"));
         mMap.addMarker(new MarkerOptions()
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.end_green))
                 .title(endAddress)
-                .position(endLocation).snippet("end"));
+                .position(endLocation).snippet("Điểm kết thúc"));
         mMap.addPolyline(polylineOptions);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 14));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 16));
         return polylineOptions;
     }
 }

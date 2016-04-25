@@ -2,55 +2,25 @@ package com.example.phamngoctuan.midtermproject;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.jsoup.nodes.Element;
 
 /**
- * Created by phamngoctuan on 23/04/2016.
+ * Created by phamngoctuan on 25/04/2016.
  */
-public class LocationInfo {
-    public String name;
-    public String address;
-    public LatLng position;
-    public String placeId;
+public class MarketInfo extends LocationInfo {
+    String type = "";
 
-    public LocationInfo()
-    {
-        name = address = placeId = "";
-        position = null;
-    }
-
-    public Marker addMarkerToMap(GoogleMap mMap)
-    {
-        if (placeId.equals("atm") || placeId.equals("hotel") || placeId.equals("restaurant"))
-        {
-            Marker mk = mMap.addMarker(new MarkerOptions().position(position).title(name).snippet(address));
-            return mk;
-        }
-
-        Bitmap bmp = getBitmapMarker();
-        Marker mk = mMap.addMarker(new MarkerOptions().position(position).title(name)
-                .icon(BitmapDescriptorFactory.fromBitmap(bmp)).anchor((float) 0.5, (float) 1));
-        if (!placeId.equals("park") && !placeId.equals("restaurant"))
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 16));
-        return mk;
-    }
-
+    @Override
     public Bitmap getBitmapMarker() {
         RelativeLayout layout = new RelativeLayout(MainActivity.context);
         LayoutInflater inflater = LayoutInflater.from(MainActivity.context);
@@ -58,10 +28,13 @@ public class LocationInfo {
 
         TextView tvName = (TextView) layout.findViewById(R.id.tv_mk_name);
         TextView tvAddr = (TextView) layout.findViewById(R.id.tv_mk_address);
-
+        ImageView imvAvatar = (ImageView) layout.findViewById(R.id.imv_mk_avatar);
         try {
             tvName.setText(name);
             tvAddr.setText(address);
+
+            if (type.equals("coopmart"))
+                imvAvatar.setImageBitmap(BitmapFactory.decodeResource(MainActivity.context.getResources(), R.drawable.coopmart));
         } catch (Exception e)
         {
             Log.d("debug", "Exception getBitmapmarker: " + e.getMessage());
@@ -80,17 +53,16 @@ public class LocationInfo {
         return bitmap;
     }
 
-    public void Parse(Element e){
-        name = e.attr("name");
-        String ll = e.attr("latlng");
-        position = new LatLng(Double.parseDouble(ll.substring(0, ll.indexOf(",")))
-                , Double.parseDouble(ll.substring(ll.indexOf(",") + 1, ll.length())));
-        placeId = e.attr("id");
-        address = "";
+    @Override
+    public void Parse(Element e) {
+        super.Parse(e);
+        type = e.attr("class");
+        address = e.attr("address");
+
     }
 
-    public LocationInfo clone()
-    {
-        return new LocationInfo();
+    @Override
+    public LocationInfo clone() {
+        return new MarketInfo();
     }
 }

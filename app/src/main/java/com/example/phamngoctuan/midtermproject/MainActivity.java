@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity
     static public GoogleMap mMap = null;
     static public FloatingActionButton fab = null;
     static Context context;
+    static LatLng benthanh;
 
     void initVariables()
     {
@@ -214,8 +215,10 @@ public class MainActivity extends AppCompatActivity
             if (MyConstant.isReduce) {
                 MyConstant.isReduce = false;
             }
-
         }
+        else if (id == R.id.nav_nearlocation)
+            MyDialog.ShowDialogNearLocation(context);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -225,8 +228,12 @@ public class MainActivity extends AppCompatActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mMap = mapFragment.getMap();
-        LatLng benthanh = new LatLng(10.7725986, 106.697616);
+        benthanh = new LatLng(10.7725986, 106.697616);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(benthanh, 14));
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setAllGesturesEnabled(true);
+        mMap.getUiSettings().setCompassEnabled(true);
+        mMap.setOnMarkerClickListener(MyConstant.onClickMkDirect);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -238,10 +245,6 @@ public class MainActivity extends AppCompatActivity
             return;
         }
         mMap.setMyLocationEnabled(true);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.getUiSettings().setAllGesturesEnabled(true);
-        mMap.getUiSettings().setCompassEnabled(true);
-        mMap.setOnMarkerClickListener(MyConstant.onClickMkDirect);
     }
 
     @Override

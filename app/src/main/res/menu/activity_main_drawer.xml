@@ -12,6 +12,10 @@
                 android:icon="@drawable/ic_menu_camera"
                 android:title="Địa điểm công cộng" />
             <item
+                android:id="@+id/nav_nearlocation"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="Địa điểm lân cận" />
+            <item
                 android:id="@+id/nav_famouslocation"
                 android:icon="@drawable/ic_menu_slideshow"
                 android:title="Điểm du lịch nổi tiếng"/>
