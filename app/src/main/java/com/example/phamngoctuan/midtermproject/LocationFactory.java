@@ -17,6 +17,7 @@ public class LocationFactory {
         map.put("restaurant", new RestaurantInfo());
         map.put("cinema", new CinemaInfo());
         map.put("market", new MarketInfo());
+        map.put("travel", new FamousPlaceInfo());
     }
 
     static public LocationFactory getInstance()

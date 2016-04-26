@@ -26,16 +26,16 @@
         </menu>
     </item>
 
-    <item android:title="Communicate">
+    <item android:title="Tiện ích">
         <menu>
             <item
                 android:id="@+id/nav_phone"
                 android:icon="@drawable/ic_menu_share"
                 android:title="Gọi điện thoại" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/nav_camera"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="Camera" />
         </menu>
     </item>
 

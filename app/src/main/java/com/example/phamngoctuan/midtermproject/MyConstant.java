@@ -115,6 +115,7 @@ class onClickMarkerDirection implements GoogleMap.OnMarkerClickListener
     @Override
     public boolean onMarkerClick(final Marker marker) {
         marker.showInfoWindow();
+//        MyDialog.ShowDetailDialog(MainActivity.placeMarker.get(0));
         Snackbar.make(MainActivity.fab, "Tìm đường đến địa điểm này?", Snackbar.LENGTH_LONG)
                 .setAction("Có", new View.OnClickListener() {
                     @Override

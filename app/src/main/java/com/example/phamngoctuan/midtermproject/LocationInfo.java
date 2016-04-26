@@ -46,7 +46,7 @@ public class LocationInfo {
         Bitmap bmp = getBitmapMarker();
         Marker mk = mMap.addMarker(new MarkerOptions().position(position).title(name)
                 .icon(BitmapDescriptorFactory.fromBitmap(bmp)).anchor((float) 0.5, (float) 1));
-        if (!placeId.equals("park") && !placeId.equals("restaurant"))
+        if (!placeId.equals("park") && !placeId.equals("restaurant")&& !placeId.equals("market"))
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 16));
         return mk;
     }
@@ -92,15 +92,5 @@ public class LocationInfo {
     public LocationInfo clone()
     {
         return new LocationInfo();
-    }
-
-    public View.OnClickListener getOnItemClickListener()
-    {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        };
     }
 }

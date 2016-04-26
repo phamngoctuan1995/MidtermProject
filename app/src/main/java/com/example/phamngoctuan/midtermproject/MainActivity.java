@@ -2,16 +2,20 @@ package com.example.phamngoctuan.midtermproject;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.MatrixCursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -37,18 +41,23 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity
-        implements FindLocationCallback, DirectionFinderCallback, NavigationView.OnNavigationItemSelectedListener, PhoneContactCallback {
+        implements FindLocationCallback, DirectionFinderCallback, NavigationView.OnNavigationItemSelectedListener
+        , PhoneContactCallback, BrowserCallback {
 
     private SimpleCursorAdapter mAdapter;
     static public GoogleMap mMap = null;
     static public FloatingActionButton fab = null;
     static Context context;
     static LatLng benthanh;
+    static ArrayList<LocationInfo> placeMarker = null;
 
     void initVariables() {
         context = this;
@@ -56,6 +65,11 @@ public class MainActivity extends AppCompatActivity
         MyConstant.progressDialog.setMessage("Đang tìm ...");
         MyConstant.onClickMkDirect = new onClickMarkerDirection();
         MyConstant.onClickFabUndoDirect = new onClickFabUndoDirection();
+        placeMarker = new ArrayList<>();
+
+//        MyDialog.detailDialog = new Dialog(MainActivity.context);
+//        MyDialog.detailDialog.setContentView(R.layout.detail_dialog);
+//        MyDialog.detailDialog.setTitle("Thông tin chi tiết");
     }
 
     void initDirection() {
@@ -214,7 +228,17 @@ public class MainActivity extends AppCompatActivity
             MyDialog.ShowNearLocationDialog();
         else if (id == R.id.nav_phone)
             MyDialog.ShowListDialog();
-
+        else if (id == R.id.nav_famouslocation) {
+            ArrayList<String> ids = new ArrayList<>();
+            ids.add("travel");
+            MyDialog.ReadDataAssets(ids, true);
+//            ReadDataAssetsAsyntask read = new ReadDataAssetsAsyntask(ids);
+//            read.execute();
+        }
+        else {
+            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, 0);
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -297,5 +321,40 @@ public class MainActivity extends AppCompatActivity
         } catch (ActivityNotFoundException e) {
             Log.d("debug", "Call failed: " + e.getMessage());
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK)
+        {
+            Bitmap bp = (Bitmap) data.getExtras().get("data");
+
+            FileOutputStream out = null;
+            try {
+                Log.d("debug", Environment.getExternalStorageDirectory().toString() + "/" + Calendar.getInstance().getTime().toString().replace(' ', '-') + ".png");
+                out = new FileOutputStream(Environment.getExternalStorageDirectory().toString() + "/Pictures/" + Calendar.getInstance().getTime().toString().replace(' ', '-').replace(':','-') + ".png");
+                bp.compress(Bitmap.CompressFormat.PNG, 100, out);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (out != null) {
+                        out.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }
+    }
+
+    @Override
+    public void onBrowserCallback(String url) {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
     }
 }
