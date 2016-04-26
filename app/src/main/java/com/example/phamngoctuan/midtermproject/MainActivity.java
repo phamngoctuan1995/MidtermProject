@@ -1,12 +1,16 @@
 package com.example.phamngoctuan.midtermproject;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.MatrixCursor;
 import android.graphics.BitmapFactory;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -38,7 +42,7 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity
-        implements FindLocationCallback, DirectionFinderCallback, NavigationView.OnNavigationItemSelectedListener {
+        implements FindLocationCallback, DirectionFinderCallback, NavigationView.OnNavigationItemSelectedListener, PhoneContactCallback {
 
     private SimpleCursorAdapter mAdapter;
     static public GoogleMap mMap = null;
@@ -46,8 +50,7 @@ public class MainActivity extends AppCompatActivity
     static Context context;
     static LatLng benthanh;
 
-    void initVariables()
-    {
+    void initVariables() {
         context = this;
         MyConstant.progressDialog = new ProgressDialog(this);
         MyConstant.progressDialog.setMessage("Đang tìm ...");
@@ -55,8 +58,7 @@ public class MainActivity extends AppCompatActivity
         MyConstant.onClickFabUndoDirect = new onClickFabUndoDirection();
     }
 
-    void initDirection()
-    {
+    void initDirection() {
         try {
             MyConstant.directionView = findViewById(R.id.direction_layer);
             MyConstant.directionSubView = findViewById(R.id.direction_layer_ori_des);
@@ -67,9 +69,7 @@ public class MainActivity extends AppCompatActivity
             MyConstant.directionSearch = (Button) findViewById(R.id.btnFindPath);
             MyConstant.directionDuration = (TextView) findViewById(R.id.tvDuration);
             MyConstant.directionDistance = (TextView) findViewById(R.id.tvDistance);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.d("debug", "Exception InitDirection: " + e.getMessage());
         }
 
@@ -77,29 +77,26 @@ public class MainActivity extends AppCompatActivity
             MyConstant.directionSearch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        if (MyConstant.isReduce)
-                        {
-                            MyConstant.directionView.animate().translationY(0).setDuration(500);
-                            MyConstant.isReduce = false;
-                            return;
-                        }
-                        String ori = MyConstant.directionOri.getText().toString();
-                        String des = MyConstant.directionDes.getText().toString();
-                        if (ori.equals("") || des.equals("")) {
-                            Toast.makeText(context, "Xin nhập đầy đủ điểm bắt đầu/kết thúc", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        DirectionFinder finder = new DirectionFinder((DirectionFinderCallback) context, ori, des);
-                        try {
-                            finder.execute();
-                        } catch (Exception e) {
-                            Log.d("debug", "Exception Find derection ori-des");
-                        }
+                    if (MyConstant.isReduce) {
+                        MyConstant.directionView.animate().translationY(0).setDuration(500);
+                        MyConstant.isReduce = false;
+                        return;
+                    }
+                    String ori = MyConstant.directionOri.getText().toString();
+                    String des = MyConstant.directionDes.getText().toString();
+                    if (ori.equals("") || des.equals("")) {
+                        Toast.makeText(context, "Xin nhập đầy đủ điểm bắt đầu/kết thúc", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    DirectionFinder finder = new DirectionFinder((DirectionFinderCallback) context, ori, des);
+                    try {
+                        finder.execute();
+                    } catch (Exception e) {
+                        Log.d("debug", "Exception Find derection ori-des");
+                    }
                 }
             });
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.d("debug", "listener " + e.getMessage());
         }
     }
@@ -132,10 +129,8 @@ public class MainActivity extends AppCompatActivity
             initVariables();
             initDirection();
             initMap();
-        }
-        catch (Exception e)
-        {
-            Log.d("debug", "Exception init OnCreate: " + e.getMessage ());
+        } catch (Exception e) {
+            Log.d("debug", "Exception init OnCreate: " + e.getMessage());
         }
     }
 
@@ -206,7 +201,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_publiclocation) {
-            MyDialog.ShowDialogLocation(context);
+            MyDialog.ShowLocationDialog();
         } else if (id == R.id.nav_direction) {
             MyConstant.resetDirectionView();
             MyConstant.directionMode();
@@ -215,9 +210,10 @@ public class MainActivity extends AppCompatActivity
             if (MyConstant.isReduce) {
                 MyConstant.isReduce = false;
             }
-        }
-        else if (id == R.id.nav_nearlocation)
-            MyDialog.ShowDialogNearLocation(context);
+        } else if (id == R.id.nav_nearlocation)
+            MyDialog.ShowNearLocationDialog();
+        else if (id == R.id.nav_phone)
+            MyDialog.ShowListDialog();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -255,8 +251,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFindLocationSuccess(ArrayList<LocationInfo> res) {
         MyConstant.endDirectionMode();
-        for (int i = 0; i < res.size(); ++i)
-        {
+        for (int i = 0; i < res.size(); ++i) {
             LocationInfo loc = res.get(i);
             loc.addMarkerToMap(mMap);
         }
@@ -282,5 +277,25 @@ public class MainActivity extends AppCompatActivity
         MyConstant.directionView.animate().translationY(-MyConstant.directionSubView.getHeight()).setDuration(500);
         MyConstant.isReduce = true;
     }
-}
 
+    @Override
+    public void OnPhoneContactCallback(String num) {
+        try {
+            Intent callIntent = new Intent(Intent.ACTION_CALL);
+            callIntent.setData(Uri.parse("tel:" + num));
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            startActivity(callIntent);
+        } catch (ActivityNotFoundException e) {
+            Log.d("debug", "Call failed: " + e.getMessage());
+        }
+    }
+}

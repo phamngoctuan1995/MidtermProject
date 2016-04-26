@@ -3,20 +3,14 @@ package com.example.phamngoctuan.midtermproject;
 import android.app.Dialog;
 import android.content.Context;
 import android.location.Location;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -32,8 +26,9 @@ import java.util.ArrayList;
  */
 public class MyDialog {
 //    static public int[] cb_ids = {R.id.cb_museum, R.id.cb_park, R.id.cb_restaurant, R.id.cb_cinema, R.id.cb_market, R.id.cb_all};
-    static public void ShowDialogLocation(final Context context)
+    static public void ShowLocationDialog()
     {
+        Context context = MainActivity.context;
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.location_dialog);
         dialog.setTitle("Tìm kiếm địa điểm");
@@ -77,39 +72,40 @@ public class MyDialog {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ArrayList<String> ids = new ArrayList<String>();
                 if (restaurant.isChecked())
-                {
-                    MainActivity.mMap.clear();
-                    String content;
+                    ids.add("restaurant");
+                if (park.isChecked())
+                    ids.add("park");
+                if (atm.isChecked())
+                    ids.add("atm");
+                if (cinema.isChecked())
+                    ids.add("cinema");
+                if (market.isChecked())
+                    ids.add("market");
+                MainActivity.mMap.clear();
+                for (String id : ids) {
+                    String content = null;
                     Elements places;
                     try {
-                        content = MyConstant.readFileFromAssets("restaurant.xml");
-                        Document doc = Jsoup.parse(content);
-                        places = doc.getElementsByTag("place");
-                    } catch (Exception e) {
-                        Log.d("debug", "Exception parse doc: " + e.getMessage());
+                        content = MyConstant.readFileFromAssets(id + ".xml");
+                    } catch (IOException e) {
+                        e.printStackTrace();
                         return;
                     }
-                    finally {
-                        dialog.dismiss();
-                    }
+                    Document doc = Jsoup.parse(content);
+                    places = doc.getElementsByTag("place");
+
                     int i = 0;
-                    for (Element e : places)
-                    {
+                    dialog.dismiss();
+                    for (Element e : places) {
                         if (i++ == 40)
                             break;
-                        RestaurantInfo atm = new RestaurantInfo();
-
-                        atm.Parse(e);
-                        atm.addMarkerToMap(MainActivity.mMap);
+                        LocationFactory lf = LocationFactory.getInstance();
+                        final LocationInfo loc = lf.getLocation(id);
+                        loc.Parse(e);
+                        loc.addMarkerToMap(MainActivity.mMap);
                     }
-                    Location myLoc = MyConstant.getCurrentLocation();
-                    if (myLoc == null) {
-                        MainActivity.mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(MainActivity.benthanh, 13));
-                        return;
-                    }
-                    LatLng myLatlng = new LatLng(myLoc.getLatitude(), myLoc.getLongitude());
-                    MainActivity.mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatlng, 15));
                 }
             }
         });
@@ -123,8 +119,9 @@ public class MyDialog {
         dialog.show();
     }
 
-    static public void ShowDialogNearLocation(final Context context)
+    static public void ShowNearLocationDialog()
     {
+        Context context = MainActivity.context;
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.near_location_dialog);
         dialog.setTitle("Chọn loại địa điểm");
@@ -194,6 +191,29 @@ public class MyDialog {
                 dialog.dismiss();
             }
         });
+        dialog.show();
+    }
+
+    static public void ShowDetailDialog(LocationInfo loc)
+    {
+
+    }
+
+    static public void ShowListDialog()
+    {
+        final Dialog dialog = new Dialog(MainActivity.context);
+        dialog.setContentView(R.layout.list_dialog);
+        dialog.setTitle("Danh sách số điện thoại");
+        ListView listview = (ListView) dialog.findViewById(R.id.lv_listdialog);
+        Button close = (Button) dialog.findViewById(R.id.bt_close);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        CustomArrayAdapter adapter = new CustomArrayAdapter(MainActivity.context, R.layout.list_location_item);
+        listview.setAdapter(adapter);
         dialog.show();
     }
 }

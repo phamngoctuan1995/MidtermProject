@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="220dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="5dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_name_list_dialog"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:text="Title"
+            android:textSize="17dp"
+            android:maxLines="2"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_number_list_dialog"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="14dp"
+            android:text="Address"
+            android:maxLines="2"/>
+    </LinearLayout>
+    <ImageButton
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:id="@+id/imb_call_list_dialog"
+        android:src="@drawable/ic_dial"
+        android:scaleType="centerCrop" />
+</LinearLayout>

@@ -1,7 +1,5 @@
 package com.example.phamngoctuan.midtermproject;
 
-import android.util.Log;
-
 import com.google.android.gms.maps.model.LatLng;
 
 import org.jsoup.nodes.Element;
@@ -25,11 +23,11 @@ public class RestaurantInfo extends LocationInfo {
     public void Parse(Element e) {
         name = e.attr("name");
         address = e.attr("address");
-        avatar = e.attr("avatar").substring(2);
+        avatar = e.attr("avatar");
         score = Double.parseDouble(e.attr("score"));
         type = e.attr("type");
         price = e.attr("price");
-        link = "http://www.foody.vn/ho-chi-minh/" + e.attr("id");
+        link = "http://www.foody.vn/ho-chi-minh/" + e.attr("link");
         placeId = e.attr("id");
         String lat = e.attr("lat");
         String lng = e.attr("lng");

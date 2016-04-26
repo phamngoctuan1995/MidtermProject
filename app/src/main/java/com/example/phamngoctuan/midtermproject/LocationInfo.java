@@ -93,4 +93,14 @@ public class LocationInfo {
     {
         return new LocationInfo();
     }
+
+    public View.OnClickListener getOnItemClickListener()
+    {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        };
+    }
 }
